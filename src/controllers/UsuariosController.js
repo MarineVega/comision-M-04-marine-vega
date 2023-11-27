@@ -65,14 +65,6 @@ UsuariosController.registrarUsuario = async (req, res) => {
     }
 }
 
-
-// {
-//     "usuario": "prueba",
-//     "contrasenia": "123",
-//     "email": "prue@gmail.com",
-//     "avatarURL": "sssss"
-//   }
-
 // Editar usuario
 UsuariosController.editarUsuario = async (req, res) => {
     try {
