@@ -1,9 +1,18 @@
-const http = require('node:http');
+// Instalar las dependencias esenciales como Express, Cors, Dotenv, Helmet, Morgan,
+// Configurar los Middlewares necesarios.
+// Configurar la conexión a la base de datos utilizando Mongoose.
 
-const PORT=3000;
+require('dotenv').config();
 
-const servidor = http.createServer();
+const express = require('express');
 
-servidor.listen(PORT, function() {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+const app = express();
+const PORT = 3000;
+
+const conectarBD = require('./config/Mongoose.js');
+
+app.listen(PORT, () => {
+    console.log(`Servidor Express corriendo en el puerto ${PORT}`);
+
+    conectarBD();
+  });
