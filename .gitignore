@@ -1,3 +1,6 @@
-node_modules
-package-lock.json
-.env
+Backend/node_modules
+Backend/package-lock.json
+Backend/.env
+
+json_ejemplos.tx
+

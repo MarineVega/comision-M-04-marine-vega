@@ -1,10 +1,13 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 
 const PosteosSchema = new Schema({
   titulo: String,
   descripcion: String,
-  autor: String,            //referencia a usuario
-  comentarios: String,      //referencia a comentario
+  autor: {                      //referencia a usuario
+      type: Types.ObjectId,
+      ref: 'usuarios',
+      required: true,
+    },
   imagenURL: String,
   fechaCreacion: Date,
 });
