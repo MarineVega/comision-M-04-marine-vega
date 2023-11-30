@@ -1,11 +1,13 @@
 const PosteosModel = require('./../models/PosteosModel.js');
 
+const { verificarToken } = require('./../utils/token.js');
+
 const PosteosController = {} 
 
 // Ver posteos
 PosteosController.verPosteos = async (req, res) => {
     try {
-       const listaPosteos = await PosteosModel.find();
+       const listaPosteos = await PosteosModel.find()/*.populate('usuarios')*/;
 
        return res.json(listaPosteos);     
 
@@ -44,7 +46,24 @@ PosteosController.verPosteo = async (req, res) => {
 // Crear posteo
 PosteosController.crearPosteo = async (req, res) => {
     try {
-        const { titulo, descripcion, autor, imagenURL, fechaCreacion } = req.body;
+        const { titulo, descripcion, imagenURL, fechaCreacion } = req.body;
+
+        // Valido el token --> lo ideal sería agregar un Middleware
+        const { token } = req.headers;
+
+        const tokenValido = verificarToken(token);
+
+        if (!tokenValido) {
+            return res.status(500).json({            
+                mensaje: 'El token no es válido',
+                error: error
+            });     
+        }
+
+        //console.log(tokenValido);
+        //return false;
+
+        const autor = tokenValido.id
 
         const nuevoPosteo = new PosteosModel({
             titulo: titulo,
@@ -82,6 +101,29 @@ PosteosController.eliminarPosteo = async (req, res) => {
         });    
     }
 }
+/*
+// Editar posteo
+PosteosController.editarPosteo = async (req, res) => {
+    try {
+        const { id, titulo, descripcion, autor, imagenURL, fechaCreacion } = req.body;
+
+        // Validar el autor...
+
+        await PosteosModel.findByIdAndUpdate(
+            id,
+            { titulo: titulo, descripcion: descripcion, imagenURL: imagenURL }            
+            );
+        
+        return res.json({mensaje: 'Posteo editado con éxito'}); 
+
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ocurrió un error interno al intentar editar el posteo',
+            error: error
+        });    
+    }
+}
+*/
 
 // Exporto
 module.exports = PosteosController ;

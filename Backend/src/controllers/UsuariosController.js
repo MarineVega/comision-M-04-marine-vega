@@ -68,11 +68,11 @@ UsuariosController.registrarUsuario = async (req, res) => {
 // Editar usuario
 UsuariosController.editarUsuario = async (req, res) => {
     try {
-        const { id, email, avatarURL } = req.body;
+        const { id, usuario, contrasenia, email, avatarURL } = req.body;
 
         await UsuariosModel.findByIdAndUpdate(
             id,
-            { email: email, avatarURL: avatarURL }
+            { usuario: usuario, contrasenia: contrasenia, email: email, avatarURL: avatarURL }
         );
 
         return res.json({ mensaje: 'Usuario actualizado con éxito' });

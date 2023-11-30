@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const conectarBD = require('./config/Mongoose.js');
+
+const autenticacionRouter = require('./routes/AutenticacionRouter.js');
 const usuariosRouter = require('./routes/UsuariosRouter.js');
 const posteosRouter = require('./routes/PosteosRouter.js');
 const comentariosRouter = require('./routes/ComentariosRouter.js');
@@ -21,6 +23,7 @@ app.use(morgan('combined'));
 app.use(bodyParser.json());
 
 // Rutas
+app.use(autenticacionRouter);
 app.use(usuariosRouter);
 app.use(posteosRouter);
 app.use(comentariosRouter);

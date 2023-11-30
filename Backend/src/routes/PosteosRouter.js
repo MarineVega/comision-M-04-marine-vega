@@ -9,7 +9,8 @@ const {
 } = require('./../controllers/PosteosController.js');
 
 // Ver posteos
-posteosRouter.get('/posteos',verPosteos);
+//posteosRouter.get('/posteos',validarToken, verPosteos);
+posteosRouter.get('/posteos', verPosteos);
 
 // Ver posteo
 posteosRouter.get('/posteo/:id',verPosteo);
