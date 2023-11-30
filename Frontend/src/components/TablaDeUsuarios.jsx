@@ -1,8 +1,10 @@
 import { Table, Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const TablaDeDatos = (props) => {
-    const { lista, usuario } = props; 
+const TablaDeUsuarios = (props) => {
+   //const { lista, usuario } = props; 
+
+   const { lista } = props; 
 
     const navigate = useNavigate();
 
@@ -23,8 +25,8 @@ const TablaDeDatos = (props) => {
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Título</th>
-                    <th>Autor</th>
+                    <th>Usuario</th>
+                    <th>Avatar</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -34,9 +36,8 @@ const TablaDeDatos = (props) => {
                     lista.map((item, key) => (       
                         <tr key={key}>                            
                             <td>{ key + 1 }</td>
-                            <td>{ item.titulo }</td>
-                            <td>{ item.autor }</td>
-                            {/*<td>{ item.autor.usuario }</td> */}
+                            <td>{ item.usuario }</td>
+                            <td>{ item.avatarURL }</td>                            
                             <td>
                                 <ButtonGroup aria-label="Basic example" style={{ maxWidth: '30px' }}>
                                     <Button variant="outline-info" onClick={() => ver(item._id)}>                                    
@@ -59,4 +60,4 @@ const TablaDeDatos = (props) => {
     );
 }
 
-export default TablaDeDatos;
+export default TablaDeUsuarios;

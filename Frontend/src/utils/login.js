@@ -10,7 +10,7 @@ export const guardarToken = (token) => {
 
 export const obtenerDatos = () => {
     const datos = localStorage.getItem('usuario');
-
+   
     return JSON.parse(datos);
 }
 

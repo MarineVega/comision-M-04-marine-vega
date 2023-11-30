@@ -1,17 +1,17 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const ComentariosSchema = new Schema({
   autor: {                  //referencia a usuario
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'usuarios',
     required: true,
   },
   posteo: {                //referencia a posteo
-    type: Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'posteos',
     required: true,
   },  
-  descripcion: String,
+  comentario: String,
 });
 
 const ComentariosModel = model('comentarios', ComentariosSchema);
