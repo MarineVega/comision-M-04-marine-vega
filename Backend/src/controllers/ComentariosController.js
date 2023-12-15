@@ -1,22 +1,71 @@
 const ComentariosModel = require('../models/ComentariosModel.js');
+const { verificarToken } = require('./../utils/token.js');
 
-const ComentariosController = {} 
+const ComentariosController = {}
 
 // Ver comentarios
 ComentariosController.verComentarios = async (req, res) => {
     try {
-       const listaComentarios = await ComentariosModel.find();
+        const { idPosteo } = req.params;
 
-       return res.json(listaComentarios);     
+        const ComentariosEncontrados = await ComentariosModel.find({
+                posteo: idPosteo
+        }).populate('autor');
 
-   } catch (error) {
-       console.log(error);
-       return res.status(500).json({ 
-           mensaje: 'Ocurrió un error interno',
-           error : error
-       });        
-   }   
+        // Hay que quitar la clave "contrasenia" del objeto, porque es un dato sensible. Se puede eliminar directamente la clave, o enviar la clave con null, en ppio voy por esta segunda opción
+        
+        const ComentariosEncontradosFiltrados = ComentariosEncontrados.map(comentario => {
+            comentario.autor.contrasenia = null;
+            return comentario;
+        })
+              
+        return res.json(ComentariosEncontradosFiltrados);
+        //return res.json(ComentariosEncontrados);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            mensaje: 'No se pudieron obtener los comentarios de la publicación.',
+            error: error
+        });
+    }
 }
+
+// Agregar comentario
+ComentariosController.agregarComentario = async (req, res) => {
+    try {
+        const { comentario, idPosteo } = req.body;
+        const { token } = req.headers;
+
+        const tokenValido = verificarToken(token);
+
+        if (!tokenValido) {
+            return res.status(500).json({            
+                mensaje: 'El token no es válido'
+            });     
+        }
+
+        const autor = tokenValido.id
+        
+        const nuevoComentario = new ComentariosModel({
+            autor: autor,
+            posteo: idPosteo,
+            comentario: comentario,
+        });
+
+        await nuevoComentario.save();
+
+        return res.json({mensaje: 'Comentario agregado con éxito'}); 
+
+    } catch (error) {
+        return res.status(500).json({            
+            mensaje: 'Ocurrió un error interno al intentar agregar el comentario',
+            error: error
+        });        
+    }
+}
+
+
+/*
 
 // Ver comentario
 ComentariosController.verComentario = async (req, res) => {
@@ -40,40 +89,30 @@ ComentariosController.verComentario = async (req, res) => {
        });        
    }   
 }
+*/
 
-// Agregar comentario
-ComentariosController.agregarComentario = async (req, res) => {
-    try {
-        const { autor, posteo, descripcion } = req.body;
 
-        const nuevoComentario = new ComentariosModel({
-            autor: autor,
-            posteo: posteo,
-            descripcion: descripcion,
-        });
-
-        await nuevoComentario.save();
-
-        return res.json({mensaje: 'Comentario agregado con éxito'}); 
-
-    } catch (error) {
-        return res.status(500).json({            
-            mensaje: 'Ocurrió un error interno al intentar agregar el comentario',
-            error: error
-        });        
-    }
-}
-
-// Editar comentario
+//Editar comentario
 ComentariosController.editarComentario = async (req, res) => {
     try {
-        const { id, descripcion } = req.body;
+        const { id, autor, posteo, comentario } = req.body;
 
-        await ComentariosModel.findByIdAndUpdate(
+         // Valido el autor
+         const { token } = req.headers;
+
+         const tokenValido = verificarToken(token);
+ 
+         if (!tokenValido) {
+             return res.status(500).json({            
+                 mensaje: 'El token no es válido',
+             });     
+         }
+
+         await ComentariosModel.findByIdAndUpdate(
             id,
-            { descripcion: descripcion }
+            { autor: autor, posteo: posteo, comentario: comentario }
         );
-
+     
         return res.json({ mensaje: 'Comentario actualizado con éxito' });
     } catch (error) {
         return res.status(500).json({
@@ -87,10 +126,15 @@ ComentariosController.editarComentario = async (req, res) => {
 ComentariosController.eliminarComentario = async (req, res) => {
     try {
         const { id } = req.body;
+        
+        //console.log(req)
+        //console.log(id)
 
+        //console.log(req.body._id)
+        
         await ComentariosModel.findByIdAndDelete(id);
         
-        return res.json({mensaje: 'Comentario eliminado con éxito'}); 
+        return res.json({mensaje: 'Comentario eliminado con éxito!!!!!!' + id}); 
 
     } catch (error) {
         return res.status(500).json({
@@ -101,4 +145,4 @@ ComentariosController.eliminarComentario = async (req, res) => {
 }
 
 // Exporto
-module.exports = ComentariosController ;
+module.exports = ComentariosController;

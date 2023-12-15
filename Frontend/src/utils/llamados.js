@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const url = 'http://localhost:3000/';
 
-const traerDatosDeUsuarioPorID = async (id) => {
-    const endpoint = url + 'usuario/' + id;
-
+const traerDatosDeUsuarioPorID = async (idUsuario) => {
+    const endpoint = url + 'usuario/' + idUsuario;
+ 
     try {
         const respuesta = await axios.get(endpoint);
 
@@ -18,8 +18,10 @@ const traerDatosDeUsuarioPorID = async (id) => {
     }
 }
 
-const traerDatosDePosteoPorID = async (id) => {
-    const endpoint = url + 'posteo/' + id;
+const traerDatosDePosteoPorID = async (idPosteo) => {
+    const endpoint = url + 'posteo/' + idPosteo;
+
+    console.log(endpoint)
 
     try {
         const respuesta = await axios.get(endpoint);
@@ -33,7 +35,7 @@ const traerDatosDePosteoPorID = async (id) => {
         return false;
     }
 }
-
+ 
 const traerComentariosDePosteoPorID = async (idPosteo) => {
     const endpoint = url + 'comentarios/' + idPosteo;
 

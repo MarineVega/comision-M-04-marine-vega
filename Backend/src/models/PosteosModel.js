@@ -5,7 +5,7 @@ const PosteosSchema = new Schema({
   descripcion: String,
   autor: {                      //referencia a usuario
       type: Schema.Types.ObjectId,
-      ref: 'usuarios',      // nombre del modelo
+      ref: 'usuarios',        // nombre del modelo
       required: true,
     },
   imagenURL: String,

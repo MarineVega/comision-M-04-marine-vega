@@ -1,24 +1,10 @@
 import { useState } from 'react';
-
-import { Col, Form, Row, Button, Alert } from 'react-bootstrap';
+import { Col, Form, Row, Button, Alert, Image } from 'react-bootstrap';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthContext } from '../context/AuthContext.jsx';
-
-/*
-  titulo: String,
-  descripcion: String,
-  autor: {                      //referencia a usuario
-      type: Types.ObjectId,
-      ref: 'usuarios',
-      required: true,
-    },
-  imagenURL: String,
-  fechaCreacion: Date,
-});
-*/
 
 const FormCrearPosteo = () => {
     const [titulo, setTitulo] = useState('');
@@ -131,7 +117,12 @@ const FormCrearPosteo = () => {
                     Descripcion
                 </Form.Label>
                 <Col sm="10">
-                    <Form.Control type="text" onInput={cambiarDescripcion} />
+                    <Form.Control 
+                        type="text" 
+                        onInput={cambiarDescripcion}                    
+                        style={{ height: '100px' }}
+                        as="textarea" 
+                    />
                     {
                         errores.descripcion && (
                             <span style={{ color: 'red' }}>
@@ -156,6 +147,9 @@ const FormCrearPosteo = () => {
                         )
                     }                    
                 </Col>
+                <br/>
+                <br/>
+                <Image src={ imagenURL } fluid rounded/>
             </Form.Group>
 
             <Form.Group as={Row} className="mb-3">
@@ -163,7 +157,12 @@ const FormCrearPosteo = () => {
                     Fecha creación
                 </Form.Label>
                 <Col sm="10">
-                    <Form.Control type="date" onInput={cambiarFechaCreacion}/>
+                    <Form.Control 
+                        type="date" 
+                        onInput={cambiarFechaCreacion}
+
+                        //disabled
+                    />
                     {
                         errores.fechaCreacion && (
                             <span style={{ color: 'red' }}>

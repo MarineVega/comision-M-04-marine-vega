@@ -8,7 +8,7 @@ import TablaDeDatos from '../components/TablaDeDatos.jsx';
 const Inicio = () => {
     const [lista, setLista] = useState([]);
 
-    const usuario = useAuthContext();
+    const { usuario } = useAuthContext();
 
     const cargarLista = async () => {
         const url = 'http://localhost:3000/posteos';
@@ -27,9 +27,9 @@ const Inicio = () => {
     }, []);
 
     return (
-        <Card.Body>
-            { usuario ? ('Hola! ' + usuario.usuario) : 'No se inició sesión' }            
-            <TablaDeDatos lista={lista} /*usuario={usuario}*//>
+        <Card.Body>             
+            { usuario ? ('¡Hola, ' + usuario.usuario + '!') : 'No se inició sesión' }            
+            <TablaDeDatos lista={lista} usuario={usuario}/>
         </Card.Body>
     )
 }
