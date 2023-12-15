@@ -6,7 +6,7 @@ const MyNavbar = () => {
     const { usuario, logout } = useAuthContext();
 
     const desconectarUsuario = () => {
-        logout();
+        logout();  
     }
 
     return (
@@ -19,7 +19,7 @@ const MyNavbar = () => {
                         usuario ? (
                             <>
                                 <Nav.Link href='/crearPosteo'>Crear Posteo</Nav.Link>
-                                <Nav.Link onClick={desconectarUsuario}>Cerrar Sesión</Nav.Link>
+                                <Nav.Link onClick={desconectarUsuario} href='/ingresar'>Cerrar Sesión</Nav.Link>
                             </>
                         ) : (
                             <>  

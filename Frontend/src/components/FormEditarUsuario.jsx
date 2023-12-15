@@ -6,16 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { traerDatosDeUsuarioPorID } from './../utils/llamados.js';
 
-const FormEditarUsuario = () => {
+const FormEditarUsuario = (props) => {
     const { id, usuario, token } = props;
     const url = 'http://localhost:3000/usuario';
-
-    //const [usuario, setUsuario] = useState('');
+    
     const [contrasenia, setContrasenia] = useState('');
     const [email, setEmail] = useState('');
     const [avatarURL, setAvatarURL] = useState('');
     
-    const [deshabilitarBoton, setDeshabilitarBoton] = useState(false);
+    const [desHabilitarBoton, setDeshabilitarBoton] = useState(false);
     const [errores, setErrores] = useState({});
 
     const navigate = useNavigate();
@@ -118,14 +117,7 @@ const FormEditarUsuario = () => {
                     Usuario
                 </Form.Label>
                 <Col sm="10">
-                    <Form.Control type="text" onInput={cambiarUsuario} defaultValue={usuario} />
-                    {
-                        errores.usuario && (
-                            <span style={{ color: 'red' }}>
-                                {errores.usuario}
-                            </span>
-                        )
-                    }                    
+                    <Form.Control type="text" defaultValue={usuario} />                    
                 </Col>
             </Form.Group>
 

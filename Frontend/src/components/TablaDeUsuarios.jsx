@@ -1,32 +1,28 @@
 import { Table, Button, ButtonGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const TablaDeUsuarios = (props) => {
-   //const { lista, usuario } = props; 
 
-   const { lista } = props; 
+const TablaDeUsuarios = (props) => {
+   const { lista, usuario } = props; 
 
     const navigate = useNavigate();
 
-    const ver = (id) => {
-        navigate('/ver/' + id);
-    }
-
     const editar = (id) => {
-        navigate('/editar/' + id);
+        navigate('/editarUsuario/' + id);
     }
 
     const eliminar = (id) => {
-        navigate('/eliminar/' + id);
+        navigate('/eliminarUsuario/' + id);
     }
 
     return (
-        <Table striped bordered hover size="sm">
+        <Table striped bordered hover variant="dark" size="sm">
             <thead>
                 <tr>
-                    <th>#</th>
+                    {/*<th>#</th>*/}
                     <th>Usuario</th>
                     <th>Avatar</th>
+                    <th>Email</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,14 +31,12 @@ const TablaDeUsuarios = (props) => {
                 {
                     lista.map((item, key) => (       
                         <tr key={key}>                            
-                            <td>{ key + 1 }</td>
+                            {/*<td>{ key + 1 }</td>*/}
                             <td>{ item.usuario }</td>
-                            <td>{ item.avatarURL }</td>                            
+                            <img src={item.avatarURL} width={'70px'}/>
+                            <td>{ item.email }</td>
                             <td>
                                 <ButtonGroup aria-label="Basic example" style={{ maxWidth: '30px' }}>
-                                    <Button variant="outline-info" onClick={() => ver(item._id)}>                                    
-                                        Ver
-                                    </Button>
                                     <Button variant="outline-warning" onClick={() => editar(item._id)}>
                                         Editar
                                     </Button>

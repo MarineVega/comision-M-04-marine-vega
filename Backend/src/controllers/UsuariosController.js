@@ -1,5 +1,7 @@
 const UsuariosModel = require('./../models/UsuariosModel.js');
 
+const { verificarToken } = require('./../utils/token.js');
+
 const UsuariosController = {} 
 
 // Ver usuarios
@@ -17,6 +19,7 @@ UsuariosController.verUsuarios = async (req, res) => {
        });        
    }   
 }
+
 
 // Ver usuario
 UsuariosController.verUsuario = async (req, res) => {

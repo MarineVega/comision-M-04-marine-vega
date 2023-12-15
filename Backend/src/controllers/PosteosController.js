@@ -7,7 +7,7 @@ const PosteosController = {}
 // Ver posteos
 PosteosController.verPosteos = async (req, res) => {
     try {
-       const listaPosteos = await PosteosModel.find()/*.populate('usuarios')*/;
+       const listaPosteos = await PosteosModel.find().populate('autor');
 
        return res.json(listaPosteos);     
 
@@ -42,6 +42,7 @@ PosteosController.verPosteo = async (req, res) => {
        });        
    }   
 }
+
 
 // Crear posteo
 PosteosController.crearPosteo = async (req, res) => {
@@ -85,6 +86,49 @@ PosteosController.crearPosteo = async (req, res) => {
     }
 }
 
+// Editar posteo
+PosteosController.editarPosteo = async (req, res) => {
+    console.log('Back')
+
+    try {
+        const { id, titulo, descripcion, imagenURL } = req.body;
+
+        // Valido el autor
+        const { token } = req.headers;
+
+        const tokenValido = verificarToken(token);
+
+        if (!tokenValido) {
+            return res.status(500).json({            
+                mensaje: 'El token no es válido',
+            });     
+        }
+
+        const usuarioID = tokenValido.id        
+        const posteo = await PosteosModel.findById(id);
+        
+        if (posteo.autor.toString() !== usuarioID) {
+            return res.status(500).json({            
+                mensaje: 'El usuario no está autorizado a editar el posteo, porque no es el autor del mismo.',
+            });
+        }
+ 
+        await PosteosModel.findByIdAndUpdate(
+            id,
+            { titulo: titulo, descripcion: descripcion, imagenURL: imagenURL }            
+            );
+        
+        return res.json({mensaje: 'Posteo editado con éxito'}); 
+
+    } catch (error) {
+        return res.status(500).json({
+            mensaje: 'Ocurrió un error interno al intentar editar el posteo',
+            error: error
+        });    
+    }
+}
+
+
 // Eliminar posteo
 PosteosController.eliminarPosteo = async (req, res) => {
     try {
@@ -101,29 +145,6 @@ PosteosController.eliminarPosteo = async (req, res) => {
         });    
     }
 }
-/*
-// Editar posteo
-PosteosController.editarPosteo = async (req, res) => {
-    try {
-        const { id, titulo, descripcion, autor, imagenURL, fechaCreacion } = req.body;
-
-        // Validar el autor...
-
-        await PosteosModel.findByIdAndUpdate(
-            id,
-            { titulo: titulo, descripcion: descripcion, imagenURL: imagenURL }            
-            );
-        
-        return res.json({mensaje: 'Posteo editado con éxito'}); 
-
-    } catch (error) {
-        return res.status(500).json({
-            mensaje: 'Ocurrió un error interno al intentar editar el posteo',
-            error: error
-        });    
-    }
-}
-*/
 
 // Exporto
 module.exports = PosteosController ;

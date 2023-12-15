@@ -10,10 +10,10 @@ const {
 } = require('./../controllers/ComentariosController.js');
 
 // Ver comentarios
-comentariosRouter.get('/comentarios',verComentarios);
+comentariosRouter.get('/comentarios/:idPosteo',verComentarios);
 
 // Ver comentario
-comentariosRouter.get('/comentario/:id',verComentario);
+//comentariosRouter.get('/comentario/:id',verComentario);
 
 // Agregar comentario
 comentariosRouter.post('/comentario',agregarComentario);

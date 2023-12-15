@@ -1,22 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Col, Form, Row, Button, Alert } from 'react-bootstrap';
+import { Col, Form, Row, Button, Alert, Image } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-//import { useAuthContext } from '../context/AuthContext.jsx';
 
 import { traerDatosDePosteoPorID } from '../utils/llamados.js';
-/*
-titulo: String,
-  descripcion: String,
-  autor: {                      //referencia a usuario
-      type: Schema.Types.ObjectId,
-      ref: 'usuarios',      // nombre del modelo
-      required: true,
-    },
-  imagenURL: String,
-  fechaCreacion: Date,
-  */
-const FormEditarPosteo = () => {
+
+const FormEditarPosteo = (props) => {
     const { id, usuario, token } = props;
     const url = 'http://localhost:3000/posteo';
 
@@ -44,22 +33,22 @@ const FormEditarPosteo = () => {
     const verificarDatos = async () => {
         let misErrores = {}
 
-        if (titulo.length === 0){
+        if (titulo.length === 0) {
                 misErrores.titulo = 'Debe ingresar el título del posteo.';
         }
 
-        if (descripcion.length === 0){
+        if (descripcion.length === 0) {
                 misErrores.descripcion = 'Debe completar el posteo.';
         }
 
-        if (imagenURL.length === 0){           
+        if (imagenURL.length === 0) {           
                 misErrores.imagenURL = 'Debe ingresar una URL de la imagen del posteo.';
-            }            
+        }            
         
         setErrores(misErrores);
 
         if (Object.entries(misErrores).length === 0) {
-            setDesHabilitarBoton (true);
+            setDeshabilitarBoton(true);
 
             await mandarDatos();
         }
@@ -76,7 +65,7 @@ const FormEditarPosteo = () => {
         const headers = {
             token: token
         }
-
+       
         try {
             const respuesta = await axios.put(url, datos, { headers: headers });
 
@@ -92,8 +81,7 @@ const FormEditarPosteo = () => {
         setDeshabilitarBoton(false);
     }
 
-    const traerDatos = async () => {
-        /*
+    const traerDatos = async () => {       
         if (usuario) {
             const respuesta = await traerDatosDePosteoPorID(id);
 
@@ -101,35 +89,26 @@ const FormEditarPosteo = () => {
                 if (usuario.id !== respuesta.autor) {
                     return navigate('/');
                 }
-                
-                //setUsuario(respuesta.usuario);
-                setContrasenia(respuesta.contrasenia);
-                setEmail(respuesta.email);
-                setAvatarURL(respuesta.avatarURL);
 
+                setTitulo(respuesta.titulo);
+                setDescripcion(respuesta.descripcion);
+                setImagenURL(respuesta.imagenURL);
             } else {
-                setErrores({ error: 'Ocurrió un error inesperado. No se pudo obtener el usuario.' });
+                setErrores({ error: 'Ocurrió un error inesperado. No se pudo obtener el posteo.' });
                 setDeshabilitarBoton(true);
             }
         } else {
             return navigate('/');
-        }
-        */
-        const respuesta = await traerDatosDePosteoPorID(id);
-
-        if (respuesta) {
-            setTitulo(respuesta.titulo);
-            setDescripcion(respuesta.descripcion);
-            setImagenURL(respuesta.imagenURL);
-        } else {
-            setErrores({ error: 'Ocurrió un error inesperado. No se pudo obtener el posteo.' });
-            setDeshabilitarBoton(true);
         }
     }
 
     useEffect(() => {
         traerDatos();
     }, []);
+
+    const volver = () => {
+        return navigate('/');
+    }
           
     return (        
         <Form>
@@ -154,20 +133,26 @@ const FormEditarPosteo = () => {
                     Descripción
                 </Form.Label>
                 <Col sm="10">
-                    <Form.Control type="text" onInput={cambiarDescripcion} defaultValue={descripcion}/>
+                    <Form.Control 
+                        type="text" onInput={cambiarDescripcion} 
+                        defaultValue={descripcion} 
+                        style={{ height: '100px' }}
+                        as="textarea"                        
+                    />
                     {
                         errores.descripcion && (
                             <span style={{ color: 'red' }}>
                                 {errores.descripcion}
                             </span>
                         )
-                    }                    
+                    }   
+
                 </Col>
             </Form.Group>
 
             <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm="2">
-                    Imagen
+                   URL de Imagen
                 </Form.Label>
                 <Col sm="10">
                     <Form.Control type="text" onInput={cambiarImagenURL} defaultValue={imagenURL}/>
@@ -179,6 +164,9 @@ const FormEditarPosteo = () => {
                         )
                     }                    
                 </Col>
+                <br/>
+                <br/>
+                <Image src={ imagenURL } fluid rounded/>  
             </Form.Group>
             
             {
@@ -189,8 +177,12 @@ const FormEditarPosteo = () => {
                 )
             }
 
-            <Button variant="outline-success" onClick={verificarDatos} disabled={desHabilitarBoton}>                                   
-                Guardar posteo
+            <Button variant="outline-success" onClick={verificarDatos} disabled={deshabilitarBoton}>   
+                Guardar cambios
+            </Button> {'  '}
+            
+            <Button variant="outline-info" onClick={volver}>   
+                Cancelar
             </Button>
         </Form>
      );

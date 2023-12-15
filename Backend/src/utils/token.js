@@ -7,7 +7,11 @@ const verificarToken = (token) => {
     try {
         let desencriptado = jwt.verify(token, JWT_KEY);
 
-        return desencriptado;
+        if (desencriptado) {
+            return desencriptado;
+        } else {
+            return false;
+        }        
     } catch (error) {
         return false;
     }   

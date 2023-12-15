@@ -22,6 +22,7 @@ app.use(helmet());
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 
+
 // Rutas
 app.use(autenticacionRouter);
 app.use(usuariosRouter);

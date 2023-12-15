@@ -71,45 +71,49 @@ const Login = () => {
   }
 
   return (
-    <Card.Body>
-      <Form>
-        <Form.Group className="mb-3" controlId="usuario">
-          <Form.Label>Usuario</Form.Label>
-          <Form.Control type="text" placeholder="Usuario" onInput={cambiarUsuario} />
+    <Card style={{ width: '18rem' }}>
+
+      <Card.Body>
+        <Form>
+          <Form.Group className="mb-3" controlId="usuario">
+            <Form.Label>Usuario</Form.Label>
+            <Form.Control type="text" placeholder="Usuario" onInput={cambiarUsuario} />
+            {
+              errores.usuario && (
+                <Form.Text style={{ color: 'red' }}>
+                  { errores.usuario }
+                </Form.Text>
+              )
+            }
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="contraseña">
+            <Form.Label>Contraseña</Form.Label>
+            <Form.Control type="password" placeholder="Contraseña" onInput={cambiarContrasenia} />
+            {
+              errores.contrasenia && (
+                <Form.Text style={{ color: 'red' }}>
+                  { errores.contrasenia }
+                </Form.Text>
+              )
+            }
+          </Form.Group>
+
           {
-            errores.usuario && (
-              <Form.Text style={{ color: 'red' }}>
-                { errores.usuario }
-              </Form.Text>
+            errores.error && (
+              <Alert variant="warning">
+                {errores.error}
+              </Alert>
             )
           }
-        </Form.Group>
 
-        <Form.Group className="mb-3" controlId="contraseña">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control type="password" placeholder="Contraseña" onInput={cambiarContrasenia} />
-          {
-            errores.contrasenia && (
-              <Form.Text style={{ color: 'red' }}>
-                { errores.contrasenia }
-              </Form.Text>
-            )
-          }
-        </Form.Group>
-
-        {
-          errores.error && (
-            <Alert variant="warning">
-              {errores.error}
-            </Alert>
-          )
-        }
-
-        <Button variant="outline-dark" onClick={verificarDatos} disabled={deshabilitarBoton}>
-          Ingresar
-        </Button>
-      </Form>
-    </Card.Body>
+          <Button variant="outline-dark" onClick={verificarDatos} disabled={deshabilitarBoton}>
+            Ingresar
+          </Button>
+        </Form>
+        
+      </Card.Body>
+    </Card>
   )
 }
 
